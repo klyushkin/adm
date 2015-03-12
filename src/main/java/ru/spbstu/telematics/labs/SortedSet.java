@@ -11,13 +11,50 @@ package ru.spbstu.telematics.labs;
  */
 public class SortedSet implements ISortedSet {
 
+    private class Tree {
+
+        public Object data;
+        Tree left;
+        Tree right;
+
+        public Tree(Object data) {
+            this.data = data;
+        }
+
+        public Tree() {
+        }
+
+        public void setData(Object data) {
+            this.data = data;
+        }
+
+        public void add(Tree node) {
+            if (node.data.hashCode() < data.hashCode()) {
+                if (left != null) {
+                    left.add(node);
+                } else {
+                    left = node;
+                }
+            } else if (right != null) {
+                right.add(node);
+            } else {
+                right = node;
+            }
+        }
+
+    }
+    
+    
+    public Tree tree = new Tree();
+
     /**
      * Добавить элемент в дерево
      *
      */
     @Override
     public void add(Comparable e) {
-
+        Tree newTree = new Tree(e);
+        newTree.add(tree);
     }
 
     /**
@@ -35,5 +72,4 @@ public class SortedSet implements ISortedSet {
     public boolean contains(Comparable o) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
 }
