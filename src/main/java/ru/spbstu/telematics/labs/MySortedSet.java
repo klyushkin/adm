@@ -63,19 +63,39 @@ public class MySortedSet<T extends Comparable<T>> implements ISortedSet<T>, Iter
 
     /**
      * Удалить элемент из дерева
+     * @param o
+     * @return 
      */
     @Override
     public boolean remove(T o) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    public boolean traverse(T o, Tree tree) {
+        int compare = tree.data.compareTo(o);
+        if (compare == 0) {
+            return true;
+        } else if (compare == -1) {
+            if (tree.right != null) {
+                traverse(o, tree.right);
+            }
+        } else if (compare == 1) {
+            if (tree.left != null) {
+                traverse(o, tree.right);
+            }
+        }
+        return false;
+    }
+
     /**
      * Возвращает true, если элемент содержится в дереве
+     * @param o
+     * @return 
      */
     @Override
     public boolean contains(T o) {
-
-        return false;
+        return traverse(o, tree);
+        
     }
 
     @Override
