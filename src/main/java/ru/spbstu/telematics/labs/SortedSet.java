@@ -41,6 +41,11 @@ public class SortedSet implements ISortedSet {
                 right = node;
             }
         }
+        public boolean contains(Object o){
+            
+            
+            return true;
+        }
 
     }
     
@@ -72,4 +77,5 @@ public class SortedSet implements ISortedSet {
     public boolean contains(Comparable o) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+    
 }
