@@ -12,24 +12,25 @@ package ru.spbstu.telematics.labs;
 /**
  * Коллекция-множество хранит данные в упорядоченном порядке
  */
-public interface ISortedSet {
+
+public interface ISortedSet<T extends Comparable<T>> {
 
     /**
      * Добавить элемент в дерево
      *
      * @param e
      */
-    void add(Comparable e);
+    void add(T e);
 
     /**
      * Удалить элемент из дерева
      */
-    boolean remove(Comparable o);
+    boolean remove(T o);
 
     /**
      * Возвращает true, если элемент содержится в дереве
      */
-    boolean contains(Comparable o);
+    boolean contains(T o);
 }
 
 /**

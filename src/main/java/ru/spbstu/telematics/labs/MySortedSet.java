@@ -5,31 +5,33 @@
  */
 package ru.spbstu.telematics.labs;
 
+import java.util.Iterator;
+
 /**
  *
  * @author alexandr
  */
-public class SortedSet implements ISortedSet {
+public class MySortedSet<T extends Comparable<T>> implements ISortedSet<T>, Iterable<T> {
 
     private class Tree {
 
-        public Object data;
+        public T data;
         Tree left;
         Tree right;
 
-        public Tree(Object data) {
+        public Tree(T data) {
             this.data = data;
         }
 
         public Tree() {
         }
 
-        public void setData(Object data) {
+        public void setData(T data) {
             this.data = data;
         }
 
         public void add(Tree node) {
-            if (node.data.hashCode() < data.hashCode()) {
+            if (node.data.compareTo(data) == -1) {
                 if (left != null) {
                     left.add(node);
                 } else {
@@ -43,33 +45,41 @@ public class SortedSet implements ISortedSet {
         }
 
     }
-    
-    
-    public Tree tree = new Tree();
+
+    private Tree tree = null;
 
     /**
      * Добавить элемент в дерево
      *
      */
     @Override
-    public void add(Comparable e) {
-        Tree newTree = new Tree(e);
-        newTree.add(tree);
+    public void add(T e) {
+        if (tree == null) {
+            tree = new Tree(e);
+        } else {
+            tree.add(new Tree(e));
+        }
     }
 
     /**
      * Удалить элемент из дерева
      */
     @Override
-    public boolean remove(Comparable o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public boolean remove(T o) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     /**
      * Возвращает true, если элемент содержится в дереве
      */
     @Override
-    public boolean contains(Comparable o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public boolean contains(T o) {
+
+        return false;
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }
