@@ -26,26 +26,30 @@ public class MySortedSet<T extends Comparable<T>> implements ISortedSet<T>, Iter
         public Tree() {
         }
 
+        public Tree(Tree tree) {
+            this.data = tree.data;
+            this.left = tree.left;
+            this.right = tree.right;
+        }
+
         public void setData(T data) {
             this.data = data;
         }
 
-        public void add(Tree node) {
+        public void insert(Tree node) {
             if (node.data.compareTo(data) < 1) {
                 if (left != null) {
-                    left.add(node);
+                    left.insert(node);
                 } else {
                     left = node;
                 }
             } else {
-                if (right != null) right.add(node);
-                else right = node;
+                if (right != null) {
+                    right.insert(node);
+                } else {
+                    right = node;
+                }
             }
-        }
-        public boolean contains(Object o){
-            
-            
-            return true;
         }
 
     }
@@ -61,18 +65,64 @@ public class MySortedSet<T extends Comparable<T>> implements ISortedSet<T>, Iter
         if (tree == null) {
             tree = new Tree(e);
         } else {
-            tree.add(new Tree(e));
+            tree.insert(new Tree(e));
         }
     }
 
     /**
      * Удалить элемент из дерева
+     *
      * @param o
-     * @return 
+     * @return
      */
     @Override
     public boolean remove(T o) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        Tree treeToRemove = findToRemove(o, tree, null);
+        if (treeToRemove != null) {
+            recurciveAdd(treeToRemove);
+            return true;
+        }
+        return false;
+    }
+
+    private void recurciveAdd(Tree tree) {
+        if (tree.left != null) {
+            add(tree.left.data);
+            recurciveAdd(tree.left);
+        }
+
+        if (tree.right != null) {
+            add(tree.right.data);
+            recurciveAdd(tree.right);
+        }
+
+    }
+
+    private Tree findToRemove(T o, Tree targetTree, Tree parent) {
+        int compare = targetTree.data.compareTo(o);
+        if (compare == 0) {
+            if (parent != null) {
+                if (parent.left == targetTree) {
+                    parent.left = null;
+                } else {
+                    parent.right = null;
+                }
+            } else {
+                targetTree = new Tree(this.tree);
+                this.tree = null;
+            }
+            return targetTree;
+        } else if (compare > 0) {
+            if (targetTree.left != null) {
+                return findToRemove(o, targetTree.left, targetTree);
+            }
+        } else if (compare < 0) {
+            if (targetTree.right != null) {
+                return findToRemove(o, targetTree.right, targetTree);
+            }
+        }
+        return null;
+
     }
 
     private boolean traverse(T o, Tree tree) {
@@ -93,21 +143,32 @@ public class MySortedSet<T extends Comparable<T>> implements ISortedSet<T>, Iter
 
     /**
      * Возвращает true, если элемент содержится в дереве
+     *
      * @param o
-     * @return 
+     * @return
      */
     @Override
     public boolean contains(T o) {
         return traverse(o, tree);
-        
+
     }
 
     @Override
     public Iterator<T> iterator() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
+
     public static void main(String[] args) {
-        
+        MySortedSet instance = new MySortedSet();
+        instance.add("qwe");
+        instance.add("asd");
+        instance.add("zxc");
+        instance.add("52345");
+        instance.add("5234asd");
+        instance.add("52342");
+        instance.add("52344");
+        instance.add("52343");
+        instance.remove("qwe");
     }
-    
+
 }

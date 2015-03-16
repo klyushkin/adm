@@ -44,8 +44,19 @@ public class MySortedSetTest {
     public void testAdd() {
         MySortedSet instance = new MySortedSet();
         instance.add("qwe");
+        instance.add("qwe");
+        instance.add("qwe");
+        instance.add("qwe");
+        instance.add("qwe");
+        instance.add("qwe");
         instance.add("asd");
         instance.add("zxc");
+        instance.add("52345");
+        instance.add("52345");
+        instance.add("52345");
+        instance.add("52345");
+        instance.add("52345");
+        instance.add("52345");
         instance.add("52345");
 
     }
@@ -55,14 +66,42 @@ public class MySortedSetTest {
      */
     @org.junit.Test
     public void testRemove() {
-        System.out.println("remove");
-        Comparable o = null;
         MySortedSet instance = new MySortedSet();
-        boolean expResult = false;
-        boolean result = instance.remove(o);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        instance.add("qwe");
+        instance.add("asd");
+        instance.add("zxc");
+        instance.add("52345");
+        instance.add("5234asd");
+        instance.add("52342");
+        instance.add("52344");
+        instance.add("52343");
+        assertTrue(instance.contains("qwe"));
+        assertTrue(instance.contains("asd"));
+        assertTrue(instance.contains("zxc"));
+        assertTrue(instance.contains("52345"));
+        assertTrue(instance.contains("5234asd"));
+        assertTrue(instance.contains("52342"));
+        assertTrue(instance.contains("52344"));
+        assertTrue(instance.contains("52343"));
+        assertTrue(instance.remove("52342"));
+        assertFalse(instance.remove("bdfg"));
+        assertTrue(instance.contains("qwe"));
+        assertTrue(instance.contains("asd"));
+        assertTrue(instance.contains("zxc"));
+        assertTrue(instance.contains("52345"));
+        assertTrue(instance.contains("5234asd"));
+        assertFalse(instance.contains("52342"));
+        assertTrue(instance.contains("52344"));
+        assertTrue(instance.contains("52343"));
+        assertTrue(instance.remove("qwe"));
+        assertFalse(instance.contains("qwe"));
+        assertTrue(instance.contains("asd"));
+        assertTrue(instance.contains("zxc"));
+        assertTrue(instance.contains("52345"));
+        assertTrue(instance.contains("5234asd"));
+        assertFalse(instance.contains("52342"));
+        assertTrue(instance.contains("52344"));
+        assertTrue(instance.contains("52343"));
     }
 
     /**
@@ -76,12 +115,18 @@ public class MySortedSetTest {
         instance.add("asd");
         instance.add("zxc");
         instance.add("52345");
-        assertTrue(instance.contains("zxc"));
+        instance.add("5234asd");
+        instance.add("52342");
+        instance.add("52344");
+        instance.add("52343");
         assertTrue(instance.contains("qwe"));
         assertTrue(instance.contains("asd"));
+        assertTrue(instance.contains("zxc"));
         assertTrue(instance.contains("52345"));
-        assertFalse(instance.contains("vcsdg"));
-        
+        assertTrue(instance.contains("5234asd"));
+        assertTrue(instance.contains("52344"));
+        assertTrue(instance.contains("52343"));
+        assertFalse(instance.contains("hgdsd"));
 
     }
 
