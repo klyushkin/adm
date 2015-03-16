@@ -71,7 +71,7 @@ public class MySortedSet<T extends Comparable<T>> implements ISortedSet<T>, Iter
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public boolean traverse(T o, Tree tree) {
+    private boolean traverse(T o, Tree tree) {
         int compare = tree.data.compareTo(o);
         if (compare == 0) {
             return true;
