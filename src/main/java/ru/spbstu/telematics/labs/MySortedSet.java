@@ -31,16 +31,15 @@ public class MySortedSet<T extends Comparable<T>> implements ISortedSet<T>, Iter
         }
 
         public void add(Tree node) {
-            if (node.data.compareTo(data) == -1) {
+            if (node.data.compareTo(data) < 1) {
                 if (left != null) {
                     left.add(node);
                 } else {
                     left = node;
                 }
-            } else if (right != null) {
-                right.add(node);
             } else {
-                right = node;
+                if (right != null) right.add(node);
+                else right = node;
             }
         }
         public boolean contains(Object o){
@@ -80,13 +79,13 @@ public class MySortedSet<T extends Comparable<T>> implements ISortedSet<T>, Iter
         int compare = tree.data.compareTo(o);
         if (compare == 0) {
             return true;
-        } else if (compare == -1) {
-            if (tree.right != null) {
-                traverse(o, tree.right);
-            }
-        } else if (compare == 1) {
+        } else if (compare > 0) {
             if (tree.left != null) {
-                traverse(o, tree.right);
+                return traverse(o, tree.left);
+            }
+        } else if (compare < 0) {
+            if (tree.right != null) {
+                return traverse(o, tree.right);
             }
         }
         return false;
@@ -106,6 +105,9 @@ public class MySortedSet<T extends Comparable<T>> implements ISortedSet<T>, Iter
     @Override
     public Iterator<T> iterator() {
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+    public static void main(String[] args) {
+        
     }
     
 }
