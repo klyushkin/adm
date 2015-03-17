@@ -155,7 +155,23 @@ public class MySortedSet<T extends Comparable<T>> implements ISortedSet<T>, Iter
 
     @Override
     public Iterator<T> iterator() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return new Iterator<T>() {
+
+            @Override
+            public boolean hasNext() {
+                return tree.left != null || tree.right != null;
+            }
+
+            @Override
+            public T next() {
+                return tree.left.data;
+            }
+
+            @Override
+            public void remove() {
+                remove();
+            }
+        };
     }
 
     public static void main(String[] args) {

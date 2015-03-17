@@ -124,7 +124,6 @@ public class MySortedSetTest {
         assertTrue(instance.contains("zxc"));
         assertTrue(instance.contains("52345"));
         assertTrue(instance.contains("5234asd"));
-        assertTrue(instance.contains("52344"));
         assertTrue(instance.contains("52343"));
         assertFalse(instance.contains("hgdsd"));
 
@@ -136,13 +135,12 @@ public class MySortedSetTest {
     @org.junit.Test
 
     public void testIterator() {
-        System.out.println("iterator");
         MySortedSet instance = new MySortedSet();
-        Iterator expResult = null;
-        Iterator result = instance.iterator();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        instance.add("qwe");
+        instance.add("asd");
+        instance.add("zxc");
+        
     }
+    
 
 }
