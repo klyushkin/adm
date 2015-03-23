@@ -157,25 +157,28 @@ public class MySortedSet<T extends Comparable<T>> implements ISortedSet<T>, Iter
     @Override
     public Iterator<T> iterator() {
         return new Iterator<T>() {
-            
+
             Stack stack = new Stack();
+
             {
                 stack.push(tree);
             }
 
             @Override
             public boolean hasNext() {
-                if (stack.empty()) return false;
-                return !stack.empty() || ((Tree)stack.peek()).left != null || ((Tree)stack.peek()).right != null;
+                if (stack.empty()) {
+                    return false;
+                }
+                return !stack.empty() || ((Tree) stack.peek()).left != null || ((Tree) stack.peek()).right != null;
             }
 
             @Override
             public T next() {
-                Tree curent = (Tree)stack.pop();
-                if (curent.left != null){
+                Tree curent = (Tree) stack.pop();
+                if (curent.left != null) {
                     stack.push(tree.left);
                 }
-                if (curent.right != null){
+                if (curent.right != null) {
                     stack.push(tree.right);
                 }
                 return curent.data;
@@ -185,22 +188,7 @@ public class MySortedSet<T extends Comparable<T>> implements ISortedSet<T>, Iter
             public void remove() {
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             }
-            
-            
+
         };
     }
-
-    public static void main(String[] args) {
-        MySortedSet instance = new MySortedSet();
-        instance.add("qwe");
-        instance.add("asd");
-        instance.add("zxc");
-        instance.add("52345");
-        instance.add("5234asd");
-        instance.add("52342");
-        instance.add("52344");
-        instance.add("52343");
-        instance.remove("qwe");
-    }
-
 }
