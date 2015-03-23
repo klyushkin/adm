@@ -42,7 +42,7 @@ public class MySortedSetTest {
      */
     @org.junit.Test
     public void testAdd() {
-        MySortedSet instance = new MySortedSet();
+        MySortedSet<String> instance = new MySortedSet<>();
         instance.add("qwe");
         instance.add("qwe");
         instance.add("qwe");
@@ -66,7 +66,7 @@ public class MySortedSetTest {
      */
     @org.junit.Test
     public void testRemove() {
-        MySortedSet instance = new MySortedSet();
+        MySortedSet<String> instance = new MySortedSet<>();
         instance.add("qwe");
         instance.add("asd");
         instance.add("zxc");
@@ -110,7 +110,7 @@ public class MySortedSetTest {
     @org.junit.Test
 
     public void testContains() {
-        MySortedSet instance = new MySortedSet();
+        MySortedSet<String> instance = new MySortedSet<>();
         instance.add("qwe");
         instance.add("asd");
         instance.add("zxc");
@@ -135,12 +135,15 @@ public class MySortedSetTest {
     @org.junit.Test
 
     public void testIterator() {
-        MySortedSet instance = new MySortedSet();
+        MySortedSet<String> instance = new MySortedSet<>();
         instance.add("qwe");
         instance.add("asd");
         instance.add("zxc");
-        
+        Iterator<String> it = instance.iterator();
+        while (it.hasNext()) {
+            System.out.println(it.next());
+        }
+
     }
-    
 
 }

@@ -6,6 +6,7 @@
 package ru.spbstu.telematics.adm.lab1;
 
 import java.util.Iterator;
+import java.util.Stack;
 
 /**
  *
@@ -156,21 +157,36 @@ public class MySortedSet<T extends Comparable<T>> implements ISortedSet<T>, Iter
     @Override
     public Iterator<T> iterator() {
         return new Iterator<T>() {
+            
+            Stack stack = new Stack();
+            {
+                stack.push(tree);
+            }
 
             @Override
             public boolean hasNext() {
-                return tree.left != null || tree.right != null;
+                if (stack.empty()) return false;
+                return !stack.empty() || ((Tree)stack.peek()).left != null || ((Tree)stack.peek()).right != null;
             }
 
             @Override
             public T next() {
-                return tree.left.data;
+                Tree curent = (Tree)stack.pop();
+                if (curent.left != null){
+                    stack.push(tree.left);
+                }
+                if (curent.right != null){
+                    stack.push(tree.right);
+                }
+                return curent.data;
             }
 
             @Override
             public void remove() {
-                remove();
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             }
+            
+            
         };
     }
 
