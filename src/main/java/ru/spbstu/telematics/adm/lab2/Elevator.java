@@ -17,13 +17,12 @@ import java.util.logging.Logger;
  */
 public class Elevator implements Runnable { // класс, описывающий лифт
 
-                // число людей в лифте
     static private final int maxPeople = 10;      // максимальное кол-во людей в лифте
     static Semaphore countPpl = new Semaphore(maxPeople);
     static Semaphore isMoving = new Semaphore(1);       // лифт двигается
     //=========================== Move Up ======================================
 
-    void moveUp() {
+    private void moveUp() { // движение вверх
         try {
             isMoving.acquire(); // лифт поехал
         } catch (InterruptedException ex) {
@@ -40,7 +39,7 @@ public class Elevator implements Runnable { // класс, описывающи�
     //==========================================================================
 
     //========================== Move Down =====================================
-    private void moveDown() {
+    private void moveDown() { //движение вниз
         try {
             isMoving.acquire(); //лифт поехал
         } catch (InterruptedException ex) {
