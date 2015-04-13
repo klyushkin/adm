@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.concurrent.Semaphore;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.xml.crypto.Data;
 
 /**
  *
@@ -18,7 +17,7 @@ import javax.xml.crypto.Data;
  */
 public class Elevator implements Runnable { // класс, описывающий лифт
 
-    static public int countPeople = 0;            // число людей в лифте
+                // число людей в лифте
     static private final int maxPeople = 10;      // максимальное кол-во людей в лифте
     static Semaphore countPpl = new Semaphore(maxPeople);
     static Semaphore isMoving = new Semaphore(1);       // лифт двигается
@@ -26,39 +25,39 @@ public class Elevator implements Runnable { // класс, описывающи�
 
     void moveUp() {
         try {
-            isMoving.acquire();
+            isMoving.acquire(); // лифт поехал
         } catch (InterruptedException ex) {
             Logger.getLogger(Elevator.class.getName()).log(Level.SEVERE, null, ex);
         }
         try {
             System.out.println(new Date() + " Elevator moves up");
-            Thread.sleep(5000);
+            Thread.sleep(5000); //едем 5 сек
         } catch (InterruptedException ex) {
             Logger.getLogger(Elevator.class.getName()).log(Level.SEVERE, null, ex);
         }
-        isMoving.release();
+        isMoving.release(); // не едем больше
     }
     //==========================================================================
 
     //========================== Move Down =====================================
     private void moveDown() {
         try {
-            isMoving.acquire();
+            isMoving.acquire(); //лифт поехал
         } catch (InterruptedException ex) {
             Logger.getLogger(Elevator.class.getName()).log(Level.SEVERE, null, ex);
         }
         try {
             System.out.println(new Date() + " Elevator moves down");
-            Thread.sleep(5000);
+            Thread.sleep(5000); //едем
         } catch (InterruptedException ex) {
             Logger.getLogger(Elevator.class.getName()).log(Level.SEVERE, null, ex);
         }
-        isMoving.release();
+        isMoving.release();//больше не едем
     }
     //==========================================================================
 
     //=========================== Wait People ==================================
-    private void waitPeople() {
+    private void waitPeople() { //выпускаем и запускаем людей
         System.out.println(new Date() + " Elevator waiting!");
         try {
             Thread.sleep(5000);
@@ -86,10 +85,9 @@ public class Elevator implements Runnable { // класс, описывающи�
 //            System.out.println(new Date() + " " + Thread.currentThread().getName() + " try enter");
             
                 try {
-                    countPpl.acquire();
-                    isMoving.acquire();
-                    countPeople++;
-                    isMoving.release();
+                    countPpl.acquire(); //можно войти?
+                    isMoving.acquire(); //лифт стоит?
+                    isMoving.release(); 
                 } catch (InterruptedException ex) {
                     Logger.getLogger(Elevator.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -101,9 +99,8 @@ public class Elevator implements Runnable { // класс, описывающи�
 //            System.out.println(new Date() + " " + Thread.currentThread().getName() + " try"
 //                    + "exit");
             try {
-                isMoving.acquire();
+                isMoving.acquire(); //можно выйти?
                 countPpl.release();
-                countPeople--;
             } catch (InterruptedException ex) {
                 Logger.getLogger(Elevator.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -123,13 +120,13 @@ public class Elevator implements Runnable { // класс, описывающи�
         }
 
     }
-
+/*
+    будем считать, что люди не все на первом этаже
+    */
     public static void main(String[] args) {
         Thread thread = new Thread(new Elevator(), "Elevator");
         thread.start();
-//        Thread ppl = new Thread(new People(), "Andrew");
-//        ppl.start();
-        for (int i = 0; i < 30; i++) {
+        for (int i = 0; i < 10; i++) {
             new Thread(new People(), "People№ "+ i).start();
         }
     }
