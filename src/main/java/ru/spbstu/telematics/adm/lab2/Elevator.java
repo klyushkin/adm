@@ -1,7 +1,10 @@
 package ru.spbstu.telematics.adm.lab2;
 
+import java.util.Date;
+import java.util.concurrent.Semaphore;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.xml.crypto.Data;
 
 /**
  *
@@ -13,47 +16,50 @@ import java.util.logging.Logger;
  * быть больше 10 человек. Построить модель системы в которой каждый пассажир и
  * лифт представлены отдельными потоками.
  */
-public class Elevator implements Runnable{ // класс, описывающий лифт
-    public int countPeople = 0;            // число людей в лифте
-    private final int maxPeople = 10;      // максимальное кол-во людей в лифте
-    public Boolean isMoving = false;       // лифт двигается
+public class Elevator implements Runnable { // класс, описывающий лифт
 
-    synchronized public int getCountPeople() {
-        return countPeople;
-    }
-
-    synchronized public void setCountPeople(int countPeople) {
-        this.countPeople = countPeople;
-    }
+    static public int countPeople = 0;            // число людей в лифте
+    static private final int maxPeople = 10;      // максимальное кол-во людей в лифте
+    static Semaphore countPpl = new Semaphore(maxPeople);
+    static Semaphore isMoving = new Semaphore(1);       // лифт двигается
     //=========================== Move Up ======================================
-    synchronized void moveUp(){
-        isMoving = true;
+
+    void moveUp() {
         try {
-            System.out.println("Elevetor moving up");
+            isMoving.acquire();
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Elevator.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            System.out.println(new Date() + " Elevator moves up");
             Thread.sleep(5000);
         } catch (InterruptedException ex) {
             Logger.getLogger(Elevator.class.getName()).log(Level.SEVERE, null, ex);
         }
-        isMoving = false;
+        isMoving.release();
     }
     //==========================================================================
-    
+
     //========================== Move Down =====================================
-    synchronized void moveDown(){
-        isMoving = true;
+    private void moveDown() {
         try {
-            System.out.println("Elevetor moving down");
+            isMoving.acquire();
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Elevator.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            System.out.println(new Date() + " Elevator moves down");
             Thread.sleep(5000);
         } catch (InterruptedException ex) {
             Logger.getLogger(Elevator.class.getName()).log(Level.SEVERE, null, ex);
         }
-        isMoving = false;
+        isMoving.release();
     }
     //==========================================================================
-    
+
     //=========================== Wait People ==================================
-    private void waitPeople(){
-        System.out.println("Wait People! You can eneter!");
+    private void waitPeople() {
+        System.out.println(new Date() + " Elevator waiting!");
         try {
             Thread.sleep(5000);
         } catch (InterruptedException ex) {
@@ -61,13 +67,71 @@ public class Elevator implements Runnable{ // класс, описывающий
         }
     }
     //==========================================================================
-    
+
     @Override
     public void run() {
-        waitPeople();
-        moveUp();
-        waitPeople();
-        moveDown();
+        while (true) {
+
+            waitPeople();
+            moveUp();
+            waitPeople();
+            moveDown();
+
+        }
     }
-    
+
+    private static class People implements Runnable {
+
+        private void enter() {
+//            System.out.println(new Date() + " " + Thread.currentThread().getName() + " try enter");
+            
+                try {
+                    countPpl.acquire();
+                    isMoving.acquire();
+                    countPeople++;
+                    isMoving.release();
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(Elevator.class.getName()).log(Level.SEVERE, null, ex);
+                }
+           
+            System.out.println(new Date() + " " + Thread.currentThread().getName() + " enter");
+        }
+
+        private void exit() {
+//            System.out.println(new Date() + " " + Thread.currentThread().getName() + " try"
+//                    + "exit");
+            try {
+                isMoving.acquire();
+                countPpl.release();
+                countPeople--;
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Elevator.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            isMoving.release();
+            System.out.println(new Date() + " " + Thread.currentThread().getName() + " exit");
+        }
+
+        @Override
+        public void run() {
+            enter();
+            try {
+                Thread.sleep(6000);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Elevator.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            exit();
+        }
+
+    }
+
+    public static void main(String[] args) {
+        Thread thread = new Thread(new Elevator(), "Elevator");
+        thread.start();
+//        Thread ppl = new Thread(new People(), "Andrew");
+//        ppl.start();
+        for (int i = 0; i < 30; i++) {
+            new Thread(new People(), "People№ "+ i).start();
+        }
+    }
+
 }
